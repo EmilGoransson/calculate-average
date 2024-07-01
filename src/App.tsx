@@ -9,7 +9,7 @@ import {useState} from "react";
 import InfoSegment from "@/components/infoSegment.tsx";
 import SideBar from "@/components/bottomOverlay.tsx";
 import GradeSetter from "@/components/gradeTableSetter.tsx";
-
+//TODO: fix so that you can add custom course, and then add the PDF without clearing.
 function App() {
     const [courseArray, setCourseArray] = useState<Course[]>([]);
 

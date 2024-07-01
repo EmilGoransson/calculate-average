@@ -12,10 +12,10 @@ const enum grade {
 
 export class Course {
     public name: string;
-    public hp: number;
+    public hp: string;
     public grade: string;
     public date: string;
-    constructor(name:string, hp: number,grade:string, date:string){
+    constructor(name:string, hp: string,grade:string, date:string){
         this.name = name;
         this.hp = hp;
         this.grade = grade
@@ -44,7 +44,7 @@ export function getCoursesAsArray(text: string):Course[]{
     const arr:string[] = textCoursesPassed.replaceAll(",", ".").split("  ")
     for (let i = 0; i < arr.length-1; i = i+6) {
         const name:string = arr[i]
-        const hp:number= Number(arr[i+1].replace(" ", ""))
+        const hp:string= arr[i+1].replace(" ", "")
         const grade:string = arr[i+3].replace(" ", "")
         const date:string = arr[i+4].replace(" ", "")
         const course = new Course(name,hp,grade,date)
@@ -54,7 +54,7 @@ export function getCoursesAsArray(text: string):Course[]{
     const arrayFailedCrses:string[] = textCoursesFailed.replaceAll(",", ".").split("  ")
 
     let name:string = "null"
-    let hp:number = -1
+    let hp:string = "-1"
     let grade:string = "null"
     let date:string = "null"
 
@@ -65,17 +65,17 @@ export function getCoursesAsArray(text: string):Course[]{
         }
         if(key.startsWith("(")){
             name = arrayFailedCrses[i-1]
-            hp = Number(key.replace("(", ""))
+            hp = key.replace("(", "")
             grade = "F"
         }
         if(isDateValid(key)){
             date = key
         }
-        if( name != "null" && hp != -1 && grade != "null" && date != "null"){
+        if( name != "null" && hp != "-1" && grade != "null" && date != "null"){
 
             courses.push(new Course(name,hp,grade,date))
             name = "null"
-            hp = -1
+            hp = "-1"
             grade = "null"
             date = "null"
         }
@@ -106,7 +106,7 @@ export function getAverageGPA(courses:Course[]): { average: number, gradeHpWeigh
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             gradeHpWeight += grade[course.grade.toUpperCase()] * (course.hp)
-            hpUntilNow += course.hp
+            hpUntilNow += parseFloat(course.hp)
         })
         // return gradeHpWeight / expectedHP
         return {gradeHpWeight: Number(gradeHpWeight), hpUntilNow: Number(hpUntilNow), average: Number(gradeHpWeight / hpUntilNow)}

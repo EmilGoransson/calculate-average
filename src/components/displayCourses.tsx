@@ -38,10 +38,14 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
     const [courses, setCourses] = useState<Course[]>([]);
 
     function changeHP(e: React.ChangeEvent<HTMLInputElement>, name: string) {
+        console.log(e.target.value)
+        let value:string = e.target.value.replace(',', '.');
+
         if (courses) {
+
             const courseIndx = courses.findIndex((course) => course.name === name);
             const newCourses = [...courses];
-            newCourses[courseIndx].hp = Number(e.target.value);
+            newCourses[courseIndx].hp = value;
             setCourses(newCourses);
             props.updateCourse(newCourses);
         }
@@ -104,7 +108,10 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                     <Input
                         id={course.name}
                         type="text"
-                        placeholder={course.hp.toString()}
+                        step="0.1"
+                        min="0"
+                        lang="en"
+                        placeholder={course.hp.toString() == " "? course.hp.toString() : "0"}
                         value={course.hp}
                         onChange={(e) => changeHP(e, course.name)}
                     />
