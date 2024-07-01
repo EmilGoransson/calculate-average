@@ -143,7 +143,7 @@ export default function DisplayCourses(props: { updateCourse: (arg0: never[]) =>
                     <TableCell colSpan={1}>Total</TableCell>
                     <TableCell className="">{data.hpUntilNow}</TableCell>
                     <TableCell className=""> </TableCell>
-                    <TableCell className="">{data.average}</TableCell>
+                    <TableCell className="">{Math.round(Number(data.average) * 100) / 100}</TableCell>
                     <TableCell className=""> </TableCell>
                 </TableRow>
             </TableFooter>
