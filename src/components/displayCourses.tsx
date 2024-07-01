@@ -20,6 +20,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
+import {Label} from "@/components/ui/label.tsx";
 
 interface DisplayCoursesProps {
     updateCourse: (courses: Course[]) => void;
@@ -50,7 +51,7 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
         if (courses) {
             const courseIndx = courses.findIndex((course) => course.name === name);
             const newCourses = [...courses];
-            newCourses[courseIndx].grade = e.target.value;
+            newCourses[courseIndx].grade = e.target.value.trim();
             setCourses(newCourses);
             props.updateCourse(newCourses);
         }
@@ -65,6 +66,20 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
             props.updateCourse(newCourses);
         }
     }
+
+    function addCourse(){
+        const date: string = new Date().toISOString().split('T')[0]
+        let count = 0
+        courses.forEach((course)=>{
+            if(course.name.startsWith("Temp")){
+                count = count + 1
+            }
+        })
+        const course = new Course(`Temp course ${count}`, 0, " ", date)
+        const newCourses = [course, ...courses]
+        props.updateCourse(newCourses)
+    }
+
 
     useEffect(() => {
         const data = getAverageGPA(props.courses);
@@ -131,7 +146,13 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
     }
 
     return (
-        <div className="items-center flex-auto">
+        <div className="items-start flex-grow">
+            <Label className="cursor-pointer hover:text-black transition duration-300 ease-in-out p-2"
+                   onClick={addCourse}>
+                <Button variant="outline" className="flex items-start justify-start">
+                    Add custom course
+                </Button>
+            </Label>
             <Table>
                 <TableCaption></TableCaption>
                 <TableHeader>

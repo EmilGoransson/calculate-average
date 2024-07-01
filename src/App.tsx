@@ -37,13 +37,13 @@ function App() {
                 <div className="flex flex-col items-center w-3/4 p-4 w-full">
                     <div className="w-full mb-8">
                         <Label htmlFor="pdf" className="block text-lg font-bold mb-2">Upload PDF here</Label>
-                        <div className="relative border-dashed border-2 border-gray-300 rounded-lg p-4 flex justify-center items-center">
-                            <Input type="file" accept="application/pdf" onChange={extractText} id="pdf"/>
-                            <Label htmlFor="pdf" className="cursor-pointer text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out">
-                                <svg className="w-6 h-6 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
+                        <div
+                            className="relative border-dashed border-2 border-gray-300 rounded-lg p-4 flex justify-center items-center">
+                            <Label htmlFor="pdf"
+                                   className="left cursor-pointer overflow text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out">
+                                Select file
                             </Label>
+                            <Input type="file" accept="application/pdf" onChange={extractText} id="pdf"/>
                         </div>
                     </div>
 

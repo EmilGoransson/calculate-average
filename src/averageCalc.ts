@@ -82,9 +82,7 @@ export function getCoursesAsArray(text: string):Course[]{
 
     }
     //validate courses
-    console.log(courses)
     courses = validateAndRemoveBadCourses(courses)
-    console.log(courses)
     return courses
 
 
@@ -107,7 +105,7 @@ export function getAverageGPA(courses:Course[]): { average: number, gradeHpWeigh
         courses.forEach((course:Course)=>{
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
-            gradeHpWeight += grade[course.grade] * (course.hp)
+            gradeHpWeight += grade[course.grade.toUpperCase()] * (course.hp)
             hpUntilNow += course.hp
         })
         // return gradeHpWeight / expectedHP
@@ -115,6 +113,5 @@ export function getAverageGPA(courses:Course[]): { average: number, gradeHpWeigh
 
     }
 }
-//TODO: Se över om man kianske kan ta bort alla "kontrollera xxxx" innan man läser av kurser (blir problem när man har många kurser) (testa att ta med basår o allt).
 
 //TODO: Tillgodoräknade kurser?
