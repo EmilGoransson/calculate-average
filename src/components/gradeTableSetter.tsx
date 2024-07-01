@@ -1,5 +1,5 @@
 
-export default function GradeSetter(props){
+export default function GradeSetter(){
     return <div>
     </div>
 }

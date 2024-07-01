@@ -1,3 +1,4 @@
+
 const enum grade {
     A = 5,
     B = 4.5,
@@ -5,9 +6,11 @@ const enum grade {
     D = 3.5,
     E = 3,
     F = 0,
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
     P = 3,
 }
-class Course {
+
+export class Course {
     public name: string;
     public hp: number;
     public grade: string;
@@ -22,11 +25,6 @@ class Course {
 function isDateValid(dateStr:string):boolean {
     return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
 }
-function trimText(text:string){
-    let trimmedText:string = text.substring(text.indexOf("Not" ), text.indexOf("Summering"))
-    trimmedText = trimmedText.substring(4,text.lastIndexOf("Kontrollera "))
-    return trimmedText
-}
 
 export function getCoursesAsArray(text: string):Course[]{
 
@@ -34,8 +32,8 @@ export function getCoursesAsArray(text: string):Course[]{
     let trimmedText:string = text.substring(text.indexOf("Not" ), text.indexOf("Summering"))
     trimmedText = trimmedText.substring(4,text.lastIndexOf("Kontrollera "))
 
-    let textCoursesPassed:string = trimmedText.substring(0, trimmedText.indexOf("Delar"))
-    let textCoursesFailed:string = trimmedText.substring(trimmedText.indexOf("Delar"))
+    const textCoursesPassed:string = trimmedText.substring(0, trimmedText.indexOf("Delar"))
+    const textCoursesFailed:string = trimmedText.substring(trimmedText.indexOf("Delar"))
     //textCoursesFailed = textCoursesFailed.substring(textCoursesFailed.indexOf("Not ")+5)
     //regexGetCourses(textCoursesPassed)
 
@@ -53,13 +51,12 @@ export function getCoursesAsArray(text: string):Course[]{
         courses.push(course)
     }
     //Failed Courses
-    const failedCourses:Course[] = []
     const arrayFailedCrses:string[] = textCoursesFailed.replaceAll(",", ".").split("  ")
 
-    let name:string = null
-    let hp:number = null
-    let grade:string = null
-    let date:string = null
+    let name:string = "null"
+    let hp:number = -1
+    let grade:string = "null"
+    let date:string = "null"
 
     for (let i = 0; i < arrayFailedCrses.length-1; i++) {
         let key = arrayFailedCrses[i]
@@ -74,13 +71,13 @@ export function getCoursesAsArray(text: string):Course[]{
         if(isDateValid(key)){
             date = key
         }
-        if( name && hp && grade && date){
+        if( name != "null" && hp != -1 && grade != "null" && date != "null"){
 
             courses.push(new Course(name,hp,grade,date))
-            name = null
-            hp = null
-            grade = null
-            date = null
+            name = "null"
+            hp = -1
+            grade = "null"
+            date = "null"
         }
 
     }
@@ -99,18 +96,22 @@ function validateAndRemoveBadCourses(courses:Course[]):Course[]{
     })
 }
 
-export function getAverageGPA(courses:Course[]):any{
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+export function getAverageGPA(courses:Course[]): { average: number, gradeHpWeight: number, hpUntilNow: number }{
     if(courses.length != 0){
         //const expectedHP:number = 180;
         let hpUntilNow:number = 0;
         let gradeHpWeight:number = 0;
         console.log(courses)
         courses.forEach((course:Course)=>{
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             gradeHpWeight += grade[course.grade] * (course.hp)
             hpUntilNow += course.hp
         })
         // return gradeHpWeight / expectedHP
-        return {gradeHpWeight: gradeHpWeight, hpUntilNow: hpUntilNow, average: gradeHpWeight / hpUntilNow}
+        return {gradeHpWeight: Number(gradeHpWeight), hpUntilNow: Number(hpUntilNow), average: Number(gradeHpWeight / hpUntilNow)}
 
     }
 }

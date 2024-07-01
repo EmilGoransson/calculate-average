@@ -4,15 +4,17 @@ import pdfToText from "react-pdftotext";
 import DisplayCourses from "./components/displayCourses.tsx";
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
-import {getCoursesAsArray} from "./averageCalc.ts";
-import React, {useState} from "react";
+import {Course, getCoursesAsArray} from "./averageCalc.ts";
+import {useState} from "react";
 import InfoSegment from "@/components/infoSegment.tsx";
 import SideBar from "@/components/bottomOverlay.tsx";
 import GradeSetter from "@/components/gradeTableSetter.tsx";
 
 function App() {
-    const [courseArray, setCourseArray] = useState([]);
+    const [courseArray, setCourseArray] = useState<Course[]>([]);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     function extractText(event) {
         const file = event.target.files[0]
         pdfToText(file)
@@ -20,7 +22,7 @@ function App() {
             .catch(error => console.error(error))
     }
 
-    function handleChange(newCourse){
+    function handleChange(newCourse:Course[]){
         setCourseArray(newCourse)
     }
 
