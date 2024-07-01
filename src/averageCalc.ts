@@ -29,17 +29,20 @@ function trimText(text:string){
 }
 
 export function getCoursesAsArray(text: string):Course[]{
+
     //removes text extracted from pdf
     let trimmedText:string = text.substring(text.indexOf("Not" ), text.indexOf("Summering"))
     trimmedText = trimmedText.substring(4,text.lastIndexOf("Kontrollera "))
 
-    let textCoursesPassed:string = trimmedText.substring(0, trimmedText.indexOf("Delar "))
+    let textCoursesPassed:string = trimmedText.substring(0, trimmedText.indexOf("Delar"))
     let textCoursesFailed:string = trimmedText.substring(trimmedText.indexOf("Delar"))
-    textCoursesFailed = textCoursesFailed.substring(textCoursesFailed.indexOf("Not ")+5, textCoursesFailed.lastIndexOf("Kontrollera"))
+    //textCoursesFailed = textCoursesFailed.substring(textCoursesFailed.indexOf("Not ")+5)
+    //regexGetCourses(textCoursesPassed)
 
-
+    console.log("textCoursesPassed ",textCoursesPassed)
+    console.log("textCoursesFailed ",textCoursesFailed)
     //Passed Courses
-    const courses:Course[] = [];
+    let courses:Course[] = [];
     const arr:string[] = textCoursesPassed.replaceAll(",", ".").split("  ")
     for (let i = 0; i < arr.length-1; i = i+6) {
         const name:string = arr[i]
@@ -64,7 +67,6 @@ export function getCoursesAsArray(text: string):Course[]{
             key = key.substring(1)
         }
         if(key.startsWith("(")){
-            console.log(key)
             name = arrayFailedCrses[i-1]
             hp = Number(key.replace("(", ""))
             grade = "F"
@@ -82,21 +84,36 @@ export function getCoursesAsArray(text: string):Course[]{
         }
 
     }
+    //validate courses
+    console.log(courses)
+    courses = validateAndRemoveBadCourses(courses)
+    console.log(courses)
     return courses
 
 
 }
-export function getAverageGPA(courses:Course[]):number{
+function validateAndRemoveBadCourses(courses:Course[]):Course[]{
+
+    return courses.filter((course:Course)=> {
+        return !isNaN(parseFloat(String(course.hp))) && isDateValid(course.date)
+    })
+}
+
+export function getAverageGPA(courses:Course[]):any{
     if(courses.length != 0){
-        console.log(courses);
         //const expectedHP:number = 180;
         let hpUntilNow:number = 0;
         let gradeHpWeight:number = 0;
+        console.log(courses)
         courses.forEach((course:Course)=>{
             gradeHpWeight += grade[course.grade] * (course.hp)
             hpUntilNow += course.hp
         })
         // return gradeHpWeight / expectedHP
-        return gradeHpWeight / hpUntilNow
+        return {gradeHpWeight: gradeHpWeight, hpUntilNow: hpUntilNow, average: gradeHpWeight / hpUntilNow}
+
     }
 }
+//TODO: Se över om man kianske kan ta bort alla "kontrollera xxxx" innan man läser av kurser (blir problem när man har många kurser) (testa att ta med basår o allt).
+
+//TODO: Tillgodoräknade kurser?
