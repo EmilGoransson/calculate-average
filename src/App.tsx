@@ -4,9 +4,8 @@ import pdfToText from "react-pdftotext";
 import DisplayCourses from "./components/displayCourses.tsx";
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
-import {ThemeProvider} from "@/components/theme-provider"
 import {getCoursesAsArray} from "./averageCalc.ts";
-import {useState} from "react";
+import React, {useState} from "react";
 import InfoSegment from "@/components/infoSegment.tsx";
 import SideBar from "@/components/bottomOverlay.tsx";
 import GradeSetter from "@/components/gradeTableSetter.tsx";

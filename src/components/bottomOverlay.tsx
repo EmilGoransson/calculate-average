@@ -1,5 +1,5 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import React, {useContext, useState} from "react";
+import { Alert, AlertTitle } from "@/components/ui/alert"
+import React, { useState} from "react";
 import {getAverageGPA} from "@/averageCalc.ts";
 
 export default function SideBar(props){
