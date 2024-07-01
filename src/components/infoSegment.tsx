@@ -4,6 +4,12 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+    HoverCard,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card"
+
+import {Button} from "@/components/ui/button.tsx";
 
 export default function InfoSegment() {
     return (
@@ -11,23 +17,34 @@ export default function InfoSegment() {
 
             <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
-                    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+                    <AccordionTrigger>Hur räknas betyget ut?</AccordionTrigger>
                     <AccordionContent>
-                        Yes. It adheres to the WAI-ARIA design pattern.
+                        summa (betyg x (antal obligatoriska poäng))/[summa (antal obligatoriska poäng)]
+                        <div href="#" onClick={()=>{window.open("https://www.kth.se/student/studier/utlandsstudier/utbyte/behorighet-och-urval-for-utbytesstudier-1.1090201", "_blank")}}> <HoverCard>
+                            <HoverCardTrigger asChild>
+                                <Button variant="link">Källa</Button>
+                            </HoverCardTrigger>
+                        </HoverCard></div>
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-2">
-                    <AccordionTrigger>Is it styled?</AccordionTrigger>
+                    <AccordionTrigger>Sparas någon data?</AccordionTrigger>
                     <AccordionContent>
-                        Yes. It comes with default styles that match the other
-                        components' aesthetic.
+                        Nej! Allt sker lokalt på din webläsare. Kika gärna på källkoden om du är osäker. <div href="#"
+                                                                                                              onClick={() => {
+                                                                                                                  window.open("https://github.com/EmilGoransson/calculate-average", "_blank")
+                                                                                                              }}>
+                        <HoverCard>
+                            <HoverCardTrigger asChild>
+                                <Button variant="link">Github</Button>
+                            </HoverCardTrigger>
+                        </HoverCard></div>
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-3">
-                    <AccordionTrigger>Is it animated?</AccordionTrigger>
+                    <AccordionTrigger>Varför saknas det en kurs?</AccordionTrigger>
                     <AccordionContent>
-                        Yes. It's animated by default, but you can disable it if
-                        you prefer.
+                        Antagligen på grund av dåligt kodande, alternativt att det är en kurs du fått F i som inte innehåller några godkända del-moduler (dyker inte upp på PDF-filen då)
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
