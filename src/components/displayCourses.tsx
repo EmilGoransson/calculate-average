@@ -39,7 +39,7 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
 
     function changeHP(e: React.ChangeEvent<HTMLInputElement>, name: string) {
         console.log(e.target.value)
-        let value:string = e.target.value.replace(',', '.');
+        const value:string = e.target.value.replace(',', '.');
 
         if (courses) {
 
@@ -79,7 +79,7 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                 count = count + 1
             }
         })
-        const course = new Course(`Temp course ${count}`, 0, " ", date)
+        const course = new Course(`Temp course ${count}`, "0", " ", date)
         const newCourses = [course, ...courses]
         props.updateCourse(newCourses)
     }
