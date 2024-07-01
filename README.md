@@ -1,9 +1,16 @@
-# Calculate Grade Average by Uploading PDF (KTH)
+# Räkna ut ditt betygsnitt på KTH genom att enkelt ladda upp en PDF. 
+Allt sker lokalt, ingen data lämnar din webbläsare
 
-## Usage:
+## Funktionalitet 
+- Läsa in kurser från en ladok-utskrift
+- Gör det möjligt att "testa" betyg, och framtida kursers påverkan på snittet.
+- Allt räknas lokalt
 
-1. Go to [Ladok](https://www.student.ladok.se/student/app/studentwebb/intyg/skapa-intyg) and log in.
-2. Select "Official transcript of records", "Courses within selected programme (and select degree)", select language: Swedish, and include "Passed modules in not completed courses".
+
+## Instruktioner:
+
+1. Gå till [Ladok](https://www.student.ladok.se/student/app/studentwebb/intyg/skapa-intyg) och logga in.
+2. Välj "Official transcript of records", "Courses within selected programme (and select degree)", välj språk: Swedish, och inkludera "Passed modules in not completed courses".
    ![options](https://i.imgur.com/OQLOTz7.pngz)
-3. Download PDF by pressing "Create" and save it.
-4. Upload the PDF to [calculate-average](https://emilgoransson.github.io/calculate-average/)  
+3. Ladda ner PDF genom att trycka "Create" och spara PDFen
+4. Ladda upp PDFen till [calculate-average](https://emilgoransson.github.io/calculate-average/)  
