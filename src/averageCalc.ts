@@ -27,67 +27,59 @@ function isDateValid(dateStr:string):boolean {
 }
 
 export function getCoursesAsArray(text: string):Course[]{
+    const trimmedText:string = text.substring(text.indexOf("Not" ), text.indexOf("Summering")).replaceAll(",", ".")
+    const arr:string[] = trimmedText.split("  ")
+    let isInFailedSection = false;
+    const newArr = arr.map((key) => {
+        if (key.charAt(0) === " ") {
+            return key.slice(1);
+        } else {
+            return key;
+        }
+    });
 
-    //removes text extracted from pdf
-    let trimmedText:string = text.substring(text.indexOf("Not" ), text.indexOf("Summering"))
-    trimmedText = trimmedText.substring(4,text.lastIndexOf("Kontrollera "))
-
-    const textCoursesPassed:string = trimmedText.substring(0, trimmedText.indexOf("Delar"))
-    const textCoursesFailed:string = trimmedText.substring(trimmedText.indexOf("Delar"))
-    //textCoursesFailed = textCoursesFailed.substring(textCoursesFailed.indexOf("Not ")+5)
-    //regexGetCourses(textCoursesPassed)
-
-    //Passed Courses
-    let courses:Course[] = [];
-    const arr:string[] = textCoursesPassed.replaceAll(",", ".").split("  ")
-    for (let i = 0; i < arr.length-1; i = i+6) {
-        let name:string = arr[i]
-        if(name.at(0) == ' ')
-            name = name.replace(' ', '')
-        const hp:string= arr[i+1].replace(" ", "")
-        const grade:string = arr[i+3].replace(" ", "")
-        const date:string = arr[i+4].replace(" ", "")
-        const course = new Course(name,hp,grade,date)
-        courses.push(course)
-    }
-    //Failed Courses
-    const arrayFailedCrses:string[] = textCoursesFailed.replaceAll(",", ".").split("  ")
-
-    let name:string = "null"
+    let courses = []
+    console.log(newArr)
+    let name:string = ""
     let hp:string = "-1"
-    let grade:string = "null"
-    let date:string = "null"
+    let grade:string = ""
+    let date:string = ""
+    for (let i = 0; i < newArr.length; i++) {
+        const key = newArr[i]
 
-    for (let i = 0; i < arrayFailedCrses.length-1; i++) {
-        let key = arrayFailedCrses[i]
-        if (key.startsWith(" ")){
-            key = key.substring(1)
+
+        if(key == "hp" && !isInFailedSection){
+            name = newArr[i-2]
+            hp = newArr[i-1]
+            grade = newArr[i+1]
+            date = newArr[i+2]
+            courses.push(new Course(name,hp,grade,date))
+            i+=2
         }
-        if(key.startsWith("(")){
-            name = arrayFailedCrses[i-1]
-            hp = key.replace("(", "")
+        if(key == "hp)"){
+            name = newArr[i-2]
+            hp = newArr[i-1].replace("(", "")
             grade = "F"
+            isInFailedSection = true
+            console.log("INFAILEDSECTION!!")
         }
-        if(isDateValid(key)){
+        console.log("key:", key)
+        console.log(isInFailedSection, isDateValid(key), name, hp, grade)
+        if(isInFailedSection && isDateValid(key) && name != "" && hp != "-1" && grade != ""){
             date = key
-        }
-        if( name != "null" && hp != "-1" && grade != "null" && date != "null"){
-
-            courses.push(new Course(name.trimStart(),hp,grade,date))
-            name = "null"
+            courses.push(new Course(name,hp,grade,date))
+            name = ""
             hp = "-1"
-            grade = "null"
-            date = "null"
+            grade = ""
+            date = ""
         }
-
     }
-    //validate courses
-    courses = validateAndRemoveBadCourses(courses)
+    courses = validateAndRemoveInvalidCourses(courses)
     return courses
-
-
 }
-function validateAndRemoveBadCourses(courses:Course[]):Course[]{
+
+
+function validateAndRemoveInvalidCourses(courses:Course[]):Course[]{
 
     return courses.filter((course:Course)=> {
         return !isNaN(parseFloat(String(course.hp))) && isDateValid(course.date)
