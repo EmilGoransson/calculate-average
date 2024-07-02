@@ -1,5 +1,5 @@
 
-const enum grade {
+export enum grade {
     A = 5,
     B = 4.5,
     C = 4,
@@ -37,13 +37,13 @@ export function getCoursesAsArray(text: string):Course[]{
     //textCoursesFailed = textCoursesFailed.substring(textCoursesFailed.indexOf("Not ")+5)
     //regexGetCourses(textCoursesPassed)
 
-    console.log("textCoursesPassed ",textCoursesPassed)
-    console.log("textCoursesFailed ",textCoursesFailed)
     //Passed Courses
     let courses:Course[] = [];
     const arr:string[] = textCoursesPassed.replaceAll(",", ".").split("  ")
     for (let i = 0; i < arr.length-1; i = i+6) {
-        const name:string = arr[i]
+        let name:string = arr[i]
+        if(name.at(0) == ' ')
+            name = name.replace(' ', '')
         const hp:string= arr[i+1].replace(" ", "")
         const grade:string = arr[i+3].replace(" ", "")
         const date:string = arr[i+4].replace(" ", "")
@@ -73,7 +73,7 @@ export function getCoursesAsArray(text: string):Course[]{
         }
         if( name != "null" && hp != "-1" && grade != "null" && date != "null"){
 
-            courses.push(new Course(name,hp,grade,date))
+            courses.push(new Course(name.trimStart(),hp,grade,date))
             name = "null"
             hp = "-1"
             grade = "null"
@@ -101,7 +101,6 @@ export function getAverageGPA(courses:Course[]): { average: number, gradeHpWeigh
         //const expectedHP:number = 180;
         let hpUntilNow:number = 0;
         let gradeHpWeight:number = 0;
-        console.log(courses)
         courses.forEach((course:Course)=>{
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error

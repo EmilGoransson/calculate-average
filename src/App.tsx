@@ -8,7 +8,7 @@ import {Course, getCoursesAsArray} from "./averageCalc.ts";
 import {useState} from "react";
 import InfoSegment from "@/components/infoSegment.tsx";
 import SideBar from "@/components/bottomOverlay.tsx";
-import GradeSetter from "@/components/gradeTableSetter.tsx";
+//import GradeSetter from "@/components/gradeTableSetter.tsx";
 //TODO: fix so that you can add custom course, and then add the PDF without clearing.
 function App() {
     const [courseArray, setCourseArray] = useState<Course[]>([]);
@@ -30,15 +30,15 @@ function App() {
         <div className="flex flex-col min-h-screen bg-background">
             <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="text-xl text-left">
-                    Räkna ut ditt snitt (KTH)!
+                    Calculate Average Grade (KTH)!
                 </div>
             </header>
             <div className="flex flex-row flex-grow ">
-                <div className="flex flex-col items-center w-3/4 p-4 w-full">
+                <div className="flex flex-col items-center p-4 w-full">
                     <div className="w-full mb-8">
                         <Label htmlFor="pdf" className="block text-lg font-bold mb-2">Upload PDF here</Label>
                         <div
-                            className="relative border-dashed border-2 border-gray-300 rounded-lg p-4 flex justify-center items-center">
+                            className="relative border-dashed border-2 border-gray-300 rounded-lg p-5 flex justify-center items-center">
                             <Label htmlFor="pdf"
                                    className="left cursor-pointer overflow text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out">
                                 Select file
@@ -58,9 +58,9 @@ function App() {
                     <div>
                         <InfoSegment/>
                     </div>
-                    <div>
+                    {/*}<div>
                         <GradeSetter></GradeSetter>
-                    </div>
+                    </div>*/}
                 </div>
 
             </div>

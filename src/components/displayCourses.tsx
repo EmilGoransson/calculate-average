@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import React, { useState, useEffect } from "react";
-import { Course, getAverageGPA } from "@/averageCalc";
+import { Course, getAverageGPA, grade } from "@/averageCalc";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -36,6 +36,22 @@ interface Data {
 export default function DisplayCourses(props: DisplayCoursesProps) {
     const [data, setData] = useState<Data>({ gradeHpWeight: 0, hpUntilNow: 0, average: 0 });
     const [courses, setCourses] = useState<Course[]>([]);
+    const [sortOrder, setSortOrder] = useState({name: "asc", hp:"asc", weighted:"asc",date:"asc",grade:"asc"})
+
+    useEffect(() => {
+        const data = getAverageGPA(props.courses);
+        if (props.courses && data) {
+            setData(data);
+            setCourses([...props.courses]);
+        }
+    }, [props.courses]);
+
+    useEffect(() => {
+        const data = getAverageGPA(courses);
+        if (data) {
+            setData(data);
+        }
+    }, [courses]);
 
     function changeHP(e: React.ChangeEvent<HTMLInputElement>, name: string) {
         console.log(e.target.value)
@@ -83,22 +99,54 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
         const newCourses = [course, ...courses]
         props.updateCourse(newCourses)
     }
-
-
-    useEffect(() => {
-        const data = getAverageGPA(props.courses);
-        if (props.courses && data) {
-            setData(data);
-            setCourses([...props.courses]);
+    function sortCoursesOption(option:string){
+        let sortedCourseArray:Course[] = []
+        const newSortOrder = sortOrder
+        console.log(option)
+        if (option == "Name" && courses.length > 0) {
+            sortedCourseArray = courses.sort((course: Course, course2: Course) => {
+                const comparison = course.name.localeCompare(course2.name);
+                return sortOrder.name == "asc"? comparison : -comparison;
+            });
+            newSortOrder.name == "asc" ? newSortOrder.name = "desc":newSortOrder.name = "asc"
         }
-    }, [props.courses]);
-
-    useEffect(() => {
-        const data = getAverageGPA(courses);
-        if (data) {
-            setData(data);
+        else if(option == "HP" && courses.length > 0){
+            sortedCourseArray = courses.sort((course: Course, course2: Course) => {
+                const comparison:number = Number(course.hp)-Number(course2.hp);
+                return sortOrder.hp == "asc"? comparison : -comparison;
+            });
+            newSortOrder.hp == "asc" ? newSortOrder.hp = "desc":newSortOrder.hp = "asc"
         }
-    }, [courses]);
+        else if(option == "Weighted Grade" && courses.length > 0){
+            sortedCourseArray = courses.sort((course: Course, course2: Course) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
+                const comparison = Number(grade[course.grade.toUpperCase()] * parseFloat(course.hp))-(grade[course2.grade.toUpperCase()] * parseFloat(course2.hp));
+                return sortOrder.weighted == "asc"? comparison : -comparison;
+            });
+            newSortOrder.weighted == "asc" ? newSortOrder.weighted = "desc":newSortOrder.weighted = "asc"
+        }
+        else if(option == "Date" && courses.length > 0){
+            sortedCourseArray = courses.sort((course: Course, course2: Course) => {
+                const comparison = new Date(course.date) > new Date(course2.date)? 1:-1
+                return sortOrder.date == "asc"? comparison : -comparison;
+            });
+            newSortOrder.date == "asc" ? newSortOrder.date = "desc":newSortOrder.date = "asc"
+        }
+        else if(option == "Grade" && courses.length > 0){
+            sortedCourseArray = courses.sort((course: Course, course2: Course) => {
+                const comparison = course.grade.localeCompare(course2.grade);
+                return sortOrder.grade == "asc"? comparison : -comparison;
+            });
+            newSortOrder.grade == "asc" ? newSortOrder.grade = "desc":newSortOrder.grade = "asc"
+        }
+        else
+            return
+        console.log(newSortOrder)
+        setSortOrder(newSortOrder)
+        setCourses([...sortedCourseArray])
+    }
+
 
     function displayCourses(course: Course) {
         return (
@@ -116,11 +164,13 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                         onChange={(e) => changeHP(e, course.name)}
                     />
                 </TableCell>
-                <TableCell className="">{course.date}</TableCell>
-                <TableCell className="text-right w-[100px]">
+                <TableCell className="w-[200px] text-left">{grade[course.grade.toUpperCase() as keyof typeof grade] * parseFloat(course.hp)}</TableCell>
+                <TableCell className="w-[200px] text-left">{course.date}</TableCell>
+                <TableCell className="justify-center w-[100px]">
                     <Input
                         id={`${course.name}-grade`}
                         type="text"
+                        className="items-start"
                         placeholder={course.grade}
                         value={course.grade}
                         onChange={(e) => changeGrade(e, course.name)}
@@ -151,34 +201,39 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
             </TableRow>
         );
     }
-
     return (
-        <div className="items-start flex-grow">
-            <Label className="cursor-pointer hover:text-black transition duration-300 ease-in-out p-2"
-                   onClick={addCourse}>
-                <Button variant="outline" className="flex items-start justify-start">
+        <div className="items-start">
+            <Label className="cursor-pointer hover:text-black transition duration-300 ease-in-out p-2">
+                <Button variant="outline" className="flex items-start justify-start"onClick={addCourse}>
                     Add custom course
                 </Button>
             </Label>
             <Table>
                 <TableCaption></TableCaption>
                 <TableHeader>
-                    <TableRow>
-                        <TableHead className="w-[100px]">Namn</TableHead>
+                    <TableRow className="cursor-pointer" onClick={(e: React.MouseEvent<HTMLElement>) => sortCoursesOption((e.target as HTMLElement).innerHTML.toString())}>
+                        <TableHead
+                            className="w-[100px]"
+                        >
+                            Name
+                        </TableHead>
                         <TableHead>HP</TableHead>
-                        <TableHead>Datum</TableHead>
-                        <TableHead className="text-right">Betyg</TableHead>
+                        <TableHead>Weighted Grade</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead className="text-right">Grade</TableHead>
                         <TableHead className="text-right">Action</TableHead>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody className="">
                     {courses.map(displayCourses)}
                     <TableRow key="temp"></TableRow>
                 </TableBody>
                 <TableFooter>
                     <TableRow>
                         <TableCell colSpan={1}>Total</TableCell>
-                        <TableCell className="">{data.hpUntilNow}</TableCell>
+                        <TableCell className="text-left">{data.hpUntilNow}</TableCell>
+                        <TableCell className="text-left">{data.gradeHpWeight}</TableCell>
+
                         <TableCell className=""></TableCell>
                         <TableCell className="">{Math.round(Number(data.average) * 100) / 100}</TableCell>
                         <TableCell className=""></TableCell>
