@@ -30,7 +30,7 @@ export default function InfoSegment() {
                 <AccordionItem value="item-2">
                     <AccordionTrigger>Is any data saved?</AccordionTrigger>
                     <AccordionContent>
-                        "Nope! Everything happens locally on your web browser <div
+                        Nope! Everything happens locally on your web browser <div
                                                                                                               onClick={() => {
                                                                                                                   window.open("https://github.com/EmilGoransson/calculate-average", "_blank")
                                                                                                               }}>

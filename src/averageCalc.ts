@@ -39,7 +39,6 @@ export function getCoursesAsArray(text: string):Course[]{
     });
 
     let courses = []
-    console.log(newArr)
     let name:string = ""
     let hp:string = "-1"
     let grade:string = ""
@@ -61,10 +60,7 @@ export function getCoursesAsArray(text: string):Course[]{
             hp = newArr[i-1].replace("(", "")
             grade = "F"
             isInFailedSection = true
-            console.log("INFAILEDSECTION!!")
         }
-        console.log("key:", key)
-        console.log(isInFailedSection, isDateValid(key), name, hp, grade)
         if(isInFailedSection && isDateValid(key) && name != "" && hp != "-1" && grade != ""){
             date = key
             courses.push(new Course(name,hp,grade,date))
