@@ -30,9 +30,9 @@ function App() {
 
     return (
         <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-            <div className="flex flex-col min-h-screen bg-background">
+            <div className="flex flex-col min-h-screen bg-background ">
                 <header
-                    className="flex flex-row justify-between items-center sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                    className="flex flex-row p-3 justify-between items-center sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
                     <div className="text-xl">
                         Calculate Average Grade (KTH)!
                     </div>
@@ -41,7 +41,7 @@ function App() {
                     </div>
                 </header>
 
-                <div className="flex flex-row flex-grow ">
+                <div className="flex flex-row flex-grow p-4 ">
                     <div className="flex flex-col items-center p-4 w-full">
                         <div className="w-full mb-8">
                             <div>
@@ -74,8 +74,8 @@ function App() {
                     </div>
 
                 </div>
-                <footer className="py-4 md:px-8 md:py-0">
-                    <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+                <footer className="py-4 md:px-8 md:py-0 bg-background">
+                    <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
                         <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
                             Created by Emil Göransson <a href="https://www.linkedin.com/in/emil-goransson/"
                                                          target="_blank" rel="noreferrer"
