@@ -18,8 +18,9 @@ export default function InfoSegment() {
             <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
                     <AccordionTrigger>How is the grade calculated?</AccordionTrigger>
-                    <AccordionContent>
-                        sum (grade x (hp))/[sum (hp)]
+                    <AccordionContent >
+                        <p className="font-bold">sum (grade x (hp))/[sum (hp)]</p>
+                        <p>Courses with the grade "P" are skipped.</p>
                         <div onClick={()=>{window.open("https://www.kth.se/student/studier/utlandsstudier/utbyte/behorighet-och-urval-for-utbytesstudier-1.1090201", "_blank")}}> <HoverCard>
                             <HoverCardTrigger asChild>
                                 <Button variant="link">Source</Button>

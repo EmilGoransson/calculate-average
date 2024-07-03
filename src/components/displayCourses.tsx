@@ -19,22 +19,29 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card"
 import { Button } from "@/components/ui/button";
 import {Label} from "@/components/ui/label.tsx";
+import { Switch } from "@/components/ui/switch"
 
 interface DisplayCoursesProps {
     updateCourse: (courses: Course[]) => void;
     courses: Course[];
 }
 
-interface Data {
+export interface Data {
     gradeHpWeight: number;
     hpUntilNow: number;
     average: number;
+    hpWithPGrade: number;
 }
 
 export default function DisplayCourses(props: DisplayCoursesProps) {
-    const [data, setData] = useState<Data>({ gradeHpWeight: 0, hpUntilNow: 0, average: 0 });
+    const [data, setData] = useState<Data>({ gradeHpWeight: 0, hpUntilNow: 0, average: 0, hpWithPGrade:0 });
     const [courses, setCourses] = useState<Course[]>([]);
     const [sortOrder, setSortOrder] = useState({name: "asc", hp:"asc", weighted:"asc",date:"asc",grade:"asc"})
 
@@ -179,8 +186,8 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                 <TableCell className="font-medium w-[100px]">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
+                            <Button variant="ghost" className="h-8 w-4 p-0 right">
+                                <span className="sr-only ">Open menu</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-ellipsis h-4 w-4">
                                     <circle cx="12" cy="12" r="1"></circle>
                                     <circle cx="19" cy="12" r="1"></circle>
@@ -203,25 +210,54 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
     }
     return (
         <div className="items-start">
-            <Label className="cursor-pointer hover:text-black transition duration-300 ease-in-out p-2">
-                <Button variant="outline" className="flex items-start justify-start"onClick={addCourse}>
-                    Add custom course
-                </Button>
-            </Label>
+            <div className="flex">
+                <div className="flex items-center space-x-4">
+                    <Label className="cursor-pointer hover:text-black transition duration-300 ease-in-out p-2">
+                        <Button
+                            variant="outline"
+                            onClick={addCourse}
+                        >
+                            Add custom course
+                        </Button>
+                    </Label>
+                </div>
+
+
+            </div>
+
+
             <Table>
                 <TableCaption></TableCaption>
                 <TableHeader>
-                    <TableRow className="cursor-pointer" onClick={(e: React.MouseEvent<HTMLElement>) => sortCoursesOption((e.target as HTMLElement).innerHTML.toString())}>
+                    <TableRow className="cursor-pointer"
+                              onClick={(e: React.MouseEvent<HTMLElement>) => sortCoursesOption((e.target as HTMLElement).innerHTML.toString())}>
                         <TableHead
                             className="w-[100px]"
                         >
                             Name
                         </TableHead>
                         <TableHead>HP</TableHead>
-                        <TableHead>Weighted Grade</TableHead>
+                        <TableHead className="text-muted-foreground underline-offset-4 hover:underline ">
+                            <HoverCard>
+                            <HoverCardTrigger asChild>
+                                <div> Weighted Grade </div>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-80">
+                                <div className="flex justify-between space-x-1">
+                                    <div className="space-y-1">
+                                        <h4 className="text-sm font-semibold">Grade * HP</h4>
+
+
+                                    </div>
+                                </div>
+                            </HoverCardContent>
+                        </HoverCard>
+
+                        </TableHead>
+
                         <TableHead>Date</TableHead>
-                        <TableHead className="text-right">Grade</TableHead>
-                        <TableHead className="text-right">Action</TableHead>
+                        <TableHead className="text-left">Grade</TableHead>
+                        <TableHead className="text-center">Action</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody className="">
@@ -231,7 +267,7 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                 <TableFooter>
                     <TableRow>
                         <TableCell colSpan={1}>Total</TableCell>
-                        <TableCell className="text-left">{data.hpUntilNow}</TableCell>
+                        <TableCell className="text-left">{data.hpWithPGrade} ({data.hpUntilNow})</TableCell>
                         <TableCell className="text-left">{data.gradeHpWeight}</TableCell>
 
                         <TableCell className=""></TableCell>

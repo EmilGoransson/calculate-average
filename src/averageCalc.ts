@@ -84,19 +84,23 @@ function validateAndRemoveInvalidCourses(courses:Course[]):Course[]{
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-export function getAverageGPA(courses:Course[]): { average: number, gradeHpWeight: number, hpUntilNow: number }{
+export function getAverageGPA(courses:Course[]): { average: number, gradeHpWeight: number, hpUntilNow: number, hpWithPGrade:number}{
     if(courses.length != 0){
         //const expectedHP:number = 180;
         let hpUntilNow:number = 0;
         let gradeHpWeight:number = 0;
+        let hpWithPGrade:number = 0
         courses.forEach((course:Course)=>{
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            gradeHpWeight += grade[course.grade.toUpperCase()] * (course.hp)
+            if(course.grade == "P"){
+                hpWithPGrade += parseFloat(course.hp)
+                return
+            }
+            gradeHpWeight += grade[course.grade.toUpperCase() as keyof typeof grade] * parseFloat(course.hp)
             hpUntilNow += parseFloat(course.hp)
+            hpWithPGrade +=parseFloat(course.hp)
         })
         // return gradeHpWeight / expectedHP
-        return {gradeHpWeight: Number(gradeHpWeight), hpUntilNow: Number(hpUntilNow), average: Number(gradeHpWeight / hpUntilNow)}
+        return {gradeHpWeight: Number(gradeHpWeight), hpUntilNow: Number(hpUntilNow), average: Number(gradeHpWeight / hpUntilNow), hpWithPGrade:hpWithPGrade}
 
     }
 }
