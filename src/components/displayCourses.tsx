@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/hover-card"
 import { Button } from "@/components/ui/button";
 import {Label} from "@/components/ui/label.tsx";
-import { Switch } from "@/components/ui/switch"
 
 interface DisplayCoursesProps {
     updateCourse: (courses: Course[]) => void;
