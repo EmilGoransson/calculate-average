@@ -1,11 +1,8 @@
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { useState, useEffect } from "react";
-import { getAverageGPA, Course } from "@/averageCalc";
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card"
+import {Alert, AlertTitle} from "@/components/ui/alert";
+import {useEffect, useState} from "react";
+import {Course, getAverageGPA} from "@/averageCalc";
+import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
+
 interface SideBarProps {
     courses: Course[];
 }
@@ -18,7 +15,7 @@ interface Data {
 }
 
 export default function SideBar(props: SideBarProps) {
-    const [data, setData] = useState<Data>({ gradeHpWeight: "", hpUntilNow: "", average: "", hpWithPGrade: ""});
+    const [data, setData] = useState<Data>({gradeHpWeight: "", hpUntilNow: "", average: "", hpWithPGrade: ""});
     const [courses, setCourses] = useState<Course[]>([]);
 
     useEffect(() => {
@@ -47,7 +44,8 @@ export default function SideBar(props: SideBarProps) {
     }, [courses]);
 
     return (
-        <div className="max-w-md rounded-lg p-px bg-gradient-to-b from-blue-300 to-pink-300 dark:from-blue-800 dark:to-purple-800">
+        <div
+            className="max-w-md rounded-lg p-px bg-gradient-to-b from-blue-300 to-pink-300 dark:from-blue-800 dark:to-purple-800">
             <Alert className="grid text-left mx-auto grid-cols-2">
                 <AlertTitle>Snitt:</AlertTitle>
                 <div className="text-right ">
@@ -59,11 +57,11 @@ export default function SideBar(props: SideBarProps) {
                 <HoverCard>
                     <HoverCardTrigger asChild>
 
-                        <div className="text-black text-right text-primary underline-offset-4 hover:underline text-accent-foreground">
+                        <div className="text-right  underline-offset-4 hover:underline text-accent-foreground">
 
-                        {data.hpWithPGrade ? data.hpWithPGrade : "0"}
+                            {data.hpWithPGrade ? data.hpWithPGrade : "0"}
                         </div>
-                        </HoverCardTrigger>
+                    </HoverCardTrigger>
                     <HoverCardContent>
                         (HP excluding courses with grade: Pass) ({data.hpUntilNow ? data.hpUntilNow : "0"})
                     </HoverCardContent>

@@ -8,8 +8,10 @@ import {Course, getCoursesAsArray} from "./averageCalc.ts";
 import {useState} from "react";
 import InfoSegment from "@/components/infoSegment.tsx";
 import SideBar from "@/components/bottomOverlay.tsx";
-import { ThemeProvider } from "@/components/theme-selector.tsx"
+import {ThemeProvider} from "@/components/theme-selector.tsx"
 import {ThemeToggler} from "@/components/theme-toggler.tsx";
+import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card.tsx";
+import {Button} from "@/components/ui/button.tsx";
 //import GradeSetter from "@/components/gradeTableSetter.tsx";
 //TODO: fix so that you can add custom course, and then add the PDF without clearing.
 function App() {
@@ -24,7 +26,7 @@ function App() {
             .catch(error => console.error(error))
     }
 
-    function handleChange(newCourse:Course[]){
+    function handleChange(newCourse: Course[]) {
         setCourseArray(newCourse)
     }
 
@@ -45,7 +47,32 @@ function App() {
                     <div className="flex flex-col items-center p-4 w-full">
                         <div className="w-full mb-8">
                             <div>
-                                <Label htmlFor="pdf" className="block text-lg font-bold mb-2">Upload PDF here</Label>
+                                <Label htmlFor="pdf" className="block text-lg font-bold mb-2 flex items-center">
+                                    Upload PDF here
+                                    <HoverCard>
+                                        <HoverCardTrigger asChild>
+
+                                            <div className="ml-2">
+                                                <svg className="text-gray-900 dark:text-white" width="20" height="20"
+                                                     viewBox="0 0 20 20">
+                                                    <path fill="currentColor"
+                                                          d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM9 8V6h2v2H9zm0 6V9h2v5H9z"
+                                                          clip-rule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                        </HoverCardTrigger>
+                                        <HoverCardContent>
+                                            <div onClick={() => {
+                                                window.open("https://github.com/EmilGoransson/calculate-average#readme", "_blank")
+                                            }}>
+                                                <HoverCard>
+                                                    <HoverCardTrigger asChild>
+                                                        <Button variant="link">Instructions (click me)</Button>
+                                                    </HoverCardTrigger>
+                                                </HoverCard></div>
+                                        </HoverCardContent>
+                                    </HoverCard>
+                                </Label>
                             </div>
                             <div
                                 className="relative border-dashed border-2 border-gray-300 rounded-lg p-5 flex justify-center items-center">
@@ -68,12 +95,10 @@ function App() {
                         <div>
                             <InfoSegment/>
                         </div>
-                        {/*}<div>
-                        <GradeSetter></GradeSetter>
-                    </div>*/}
                     </div>
-
                 </div>
+
+
                 <footer className="py-4 md:px-8 md:py-0 bg-background">
                     <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
                         <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">

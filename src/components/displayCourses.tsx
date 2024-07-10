@@ -8,9 +8,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Input } from "@/components/ui/input"
-import React, { useState, useEffect } from "react";
-import { Course, getAverageGPA, grade } from "@/averageCalc";
+import {Input} from "@/components/ui/input"
+import React, {useEffect, useState} from "react";
+import {Course, getAverageGPA, grade} from "@/averageCalc";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,12 +19,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card"
-import { Button } from "@/components/ui/button";
+import {HoverCard, HoverCardContent, HoverCardTrigger,} from "@/components/ui/hover-card"
+import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label.tsx";
 
 interface DisplayCoursesProps {
@@ -40,9 +36,9 @@ export interface Data {
 }
 
 export default function DisplayCourses(props: DisplayCoursesProps) {
-    const [data, setData] = useState<Data>({ gradeHpWeight: 0, hpUntilNow: 0, average: 0, hpWithPGrade:0 });
+    const [data, setData] = useState<Data>({gradeHpWeight: 0, hpUntilNow: 0, average: 0, hpWithPGrade: 0});
     const [courses, setCourses] = useState<Course[]>([]);
-    const [sortOrder, setSortOrder] = useState({name: "asc", hp:"asc", weighted:"asc",date:"asc",grade:"asc"})
+    const [sortOrder, setSortOrder] = useState({name: "asc", hp: "asc", weighted: "asc", date: "asc", grade: "asc"})
 
     useEffect(() => {
         const data = getAverageGPA(props.courses);
@@ -61,7 +57,7 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
 
     function changeHP(e: React.ChangeEvent<HTMLInputElement>, name: string) {
         console.log(e.target.value)
-        const value:string = e.target.value.replace(',', '.');
+        const value: string = e.target.value.replace(',', '.');
 
         if (courses) {
 
@@ -93,11 +89,11 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
         }
     }
 
-    function addCourse(){
+    function addCourse() {
         const date: string = new Date().toISOString().split('T')[0]
         let count = 0
-        courses.forEach((course)=>{
-            if(course.name.startsWith("Temp")){
+        courses.forEach((course) => {
+            if (course.name.startsWith("Temp")) {
                 count = count + 1
             }
         })
@@ -105,48 +101,44 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
         const newCourses = [course, ...courses]
         props.updateCourse(newCourses)
     }
-    function sortCoursesOption(option:string){
-        let sortedCourseArray:Course[] = []
+
+    function sortCoursesOption(option: string) {
+        let sortedCourseArray: Course[] = []
         const newSortOrder = sortOrder
         console.log(option)
         if (option == "Name" && courses.length > 0) {
             sortedCourseArray = courses.sort((course: Course, course2: Course) => {
                 const comparison = course.name.localeCompare(course2.name);
-                return sortOrder.name == "asc"? comparison : -comparison;
+                return sortOrder.name == "asc" ? comparison : -comparison;
             });
-            newSortOrder.name == "asc" ? newSortOrder.name = "desc":newSortOrder.name = "asc"
-        }
-        else if(option == "HP" && courses.length > 0){
+            newSortOrder.name == "asc" ? newSortOrder.name = "desc" : newSortOrder.name = "asc"
+        } else if (option == "HP" && courses.length > 0) {
             sortedCourseArray = courses.sort((course: Course, course2: Course) => {
-                const comparison:number = Number(course.hp)-Number(course2.hp);
-                return sortOrder.hp == "asc"? comparison : -comparison;
+                const comparison: number = Number(course.hp) - Number(course2.hp);
+                return sortOrder.hp == "asc" ? comparison : -comparison;
             });
-            newSortOrder.hp == "asc" ? newSortOrder.hp = "desc":newSortOrder.hp = "asc"
-        }
-        else if(option == "Weighted Grade" && courses.length > 0){
+            newSortOrder.hp == "asc" ? newSortOrder.hp = "desc" : newSortOrder.hp = "asc"
+        } else if (option == "Weighted Grade" && courses.length > 0) {
             sortedCourseArray = courses.sort((course: Course, course2: Course) => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-expect-error
-                const comparison = Number(grade[course.grade.toUpperCase()] * parseFloat(course.hp))-(grade[course2.grade.toUpperCase()] * parseFloat(course2.hp));
-                return sortOrder.weighted == "asc"? comparison : -comparison;
+                const comparison = Number(grade[course.grade.toUpperCase()] * parseFloat(course.hp)) - (grade[course2.grade.toUpperCase()] * parseFloat(course2.hp));
+                return sortOrder.weighted == "asc" ? comparison : -comparison;
             });
-            newSortOrder.weighted == "asc" ? newSortOrder.weighted = "desc":newSortOrder.weighted = "asc"
-        }
-        else if(option == "Date" && courses.length > 0){
+            newSortOrder.weighted == "asc" ? newSortOrder.weighted = "desc" : newSortOrder.weighted = "asc"
+        } else if (option == "Date" && courses.length > 0) {
             sortedCourseArray = courses.sort((course: Course, course2: Course) => {
-                const comparison = new Date(course.date) > new Date(course2.date)? 1:-1
-                return sortOrder.date == "asc"? comparison : -comparison;
+                const comparison = new Date(course.date) > new Date(course2.date) ? 1 : -1
+                return sortOrder.date == "asc" ? comparison : -comparison;
             });
-            newSortOrder.date == "asc" ? newSortOrder.date = "desc":newSortOrder.date = "asc"
-        }
-        else if(option == "Grade" && courses.length > 0){
+            newSortOrder.date == "asc" ? newSortOrder.date = "desc" : newSortOrder.date = "asc"
+        } else if (option == "Grade" && courses.length > 0) {
             sortedCourseArray = courses.sort((course: Course, course2: Course) => {
                 const comparison = course.grade.localeCompare(course2.grade);
-                return sortOrder.grade == "asc"? comparison : -comparison;
+                return sortOrder.grade == "asc" ? comparison : -comparison;
             });
-            newSortOrder.grade == "asc" ? newSortOrder.grade = "desc":newSortOrder.grade = "asc"
-        }
-        else
+            newSortOrder.grade == "asc" ? newSortOrder.grade = "desc" : newSortOrder.grade = "asc"
+        } else
             return
         console.log(newSortOrder)
         setSortOrder(newSortOrder)
@@ -165,12 +157,13 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                         step="0.1"
                         min="0"
                         lang="en"
-                        placeholder={course.hp.toString() == " "? course.hp.toString() : "0"}
+                        placeholder={course.hp.toString() == " " ? course.hp.toString() : "0"}
                         value={course.hp}
                         onChange={(e) => changeHP(e, course.name)}
                     />
                 </TableCell>
-                <TableCell className="w-[200px] text-left">{grade[course.grade.toUpperCase() as keyof typeof grade] * parseFloat(course.hp)}</TableCell>
+                <TableCell
+                    className="w-[200px] text-left">{grade[course.grade.toUpperCase() as keyof typeof grade] * parseFloat(course.hp)}</TableCell>
                 <TableCell className="w-[200px] text-left">{course.date}</TableCell>
                 <TableCell className="justify-center w-[100px]">
                     <Input
@@ -187,7 +180,9 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-4 p-0 right">
                                 <span className="sr-only ">Open menu</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-ellipsis h-4 w-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                                     strokeLinejoin="round" className="lucide lucide-ellipsis h-4 w-4">
                                     <circle cx="12" cy="12" r="1"></circle>
                                     <circle cx="19" cy="12" r="1"></circle>
                                     <circle cx="5" cy="12" r="1"></circle>
@@ -197,8 +192,9 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => removeCourse(course.name)}>Remove Course</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => window.open(`https://www.kth.se/search?q=${course.name}&urlFilter=&entityFilter=course&documentFilter=&filterLabel=&l=sv&noscript=false`, "_blank")}>
+                            <DropdownMenuSeparator/>
+                            <DropdownMenuItem
+                                onClick={() => window.open(`https://www.kth.se/search?q=${course.name}&urlFilter=&entityFilter=course&documentFilter=&filterLabel=&l=sv&noscript=false`, "_blank")}>
                                 Search for course
                             </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -207,6 +203,7 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
             </TableRow>
         );
     }
+
     return (
         <div className="items-start">
             <div className="flex">
@@ -238,19 +235,19 @@ export default function DisplayCourses(props: DisplayCoursesProps) {
                         <TableHead>HP</TableHead>
                         <TableHead className="text-muted-foreground underline-offset-4 hover:underline ">
                             <HoverCard>
-                            <HoverCardTrigger asChild>
-                                <div> Weighted Grade </div>
-                            </HoverCardTrigger>
-                            <HoverCardContent className="w-80">
-                                <div className="flex justify-between space-x-1">
-                                    <div className="space-y-1">
-                                        <h4 className="text-sm font-semibold">Grade * HP</h4>
+                                <HoverCardTrigger asChild>
+                                    <div> Weighted Grade</div>
+                                </HoverCardTrigger>
+                                <HoverCardContent className="w-80">
+                                    <div className="flex justify-between space-x-1">
+                                        <div className="space-y-1">
+                                            <h4 className="text-sm font-semibold">Grade * HP</h4>
 
 
+                                        </div>
                                     </div>
-                                </div>
-                            </HoverCardContent>
-                        </HoverCard>
+                                </HoverCardContent>
+                            </HoverCard>
 
                         </TableHead>
 
