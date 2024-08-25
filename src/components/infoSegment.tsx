@@ -6,8 +6,7 @@ import {Button} from "@/components/ui/button.tsx";
 export default function InfoSegment() {
     return (
         <div className="p-4 rounded-lg">
-
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="single" collapsible className="w-full max-w-sm md:max-w-md text-left mx-auto">
                 <AccordionItem value="item-1">
                     <AccordionTrigger>How is the grade calculated?</AccordionTrigger>
                     <AccordionContent>

@@ -34,7 +34,7 @@ function App() {
         <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
             <div className="flex flex-col min-h-screen bg-background ">
                 <header
-                    className="flex flex-row p-3 justify-between items-center sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90">
+                    className="flex flex-row p-3 justify-between items-center sticky top-0 z-50 w-full border-b border-border/40 bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/80">
                     <div className="text-xl">
                         Calculate Average Grade (KTH)!
                     </div>
@@ -89,9 +89,10 @@ function App() {
                         </div>
                     </div>
                     <div className="w-1/4 p-8 right-0 xl:shrink-0 max-lg:hidden">
-                        <div className="w-full pt-5 sticky top-4">
+                        <div className="w-full pt-5 sticky top-16">
                             <SideBar courses={courseArray}></SideBar>
                         </div>
+
                         <div>
                             <InfoSegment/>
                         </div>
